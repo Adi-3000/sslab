@@ -1,0 +1,116 @@
+**PROG 7 ROUND ROBIN (JAVA CODE)**
+
+import java.util.Scanner;
+public class RoundRobin
+{
+public static void main(String[] args)
+{
+int i,j,n,time,x,counter=0,time_quantum;
+int wait_time=0,turnaround_time=0;
+Scanner sn=new Scanner(System.in);
+int[] at = new int[20];
+int[] bt = new int[20];
+int[] rt = new int[20];
+System.out.println("Enter Total Process:\t ");
+n=sn.nextInt();
+x=n;
+for(i=0;i<n;i++)
+{
+System.out.println("Enter Arrival Time for Process");
+at[i]=sn.nextInt();
+System.out.println("Enter burst time of process "+i);
+bt[i]=sn.nextInt();
+rt[i]=bt[i];
+}
+System.out.println("Enter Time Quantum:\t");
+time_quantum=sn.nextInt();
+System.out.println("\n\nProcess\t|Turnaround Time|Waiting Time");
+for(time=0,i=0;x!=0;)
+{
+if(rt[i]<=time_quantum && rt[i]>0)
+{
+time+=rt[i];
+rt[i]=0;
+counter=1;
+}
+else if(rt[i]>0)
+{
+rt[i]-=time_quantum;
+time+=time_quantum;
+}
+if(rt[i]==0 && counter==1)
+{
+x--;
+System.out.print("process"+i+"\t");
+System.out.print(time-at[i]+"\t");
+System.out.print("\t");
+System.out.print(time-at[i]-bt[i]);
+System.out.println("\t");
+wait_time+=time-at[i]-bt[i];
+turnaround_time+=time-at[i];
+counter=0;
+}
+if(i==n-1)
+i=0;
+else if(at[i+1]<=time)
+i++;
+else
+i=0;
+}
+System.out.println("\n Average Waiting Time="+wait_time*1.0/n);
+System.out.println("Average Turnaround Time ="+turnaround_time*1.0/n);
+}
+}
+
+**PROG 7 SRT(JAVA CODE)**
+
+import java.util.Scanner;
+public class ShortestRemainingTime
+{
+public static void main(String[] args)
+{
+int i,n,smallest, count=0,time=0;
+float avg=0,tt=0,end;
+int[] a = new int[20];
+int[] b = new int[20];
+int[] x = new int[20];
+int[] at = new int[20];
+int[] pid = new int[20];
+Scanner sn=new Scanner(System.in);
+System.out.println("enter the number of processes:");
+n=sn.nextInt();
+for(i=0;i<n;i++)
+{
+System.out.println("Enter Arrival Time for Process :"+i);
+a[i]=sn.nextInt();
+}
+for(i=0;i<n;i++)
+{
+System.out.println("Enter burst Time for Process :"+i);
+b[i]=sn.nextInt();
+}
+for(i=0;i<n;i++)
+x[i]=b[i];
+b[9]=9999;
+for(time=0;count!=n;time++)
+{
+smallest=9;
+for(i=0;i<n;i++)
+{
+if(a[i]<=time && b[i]<b[smallest] && b[i]>0)
+smallest=i;
+} // end of for loop
+b[smallest]--;
+if(b[smallest]==0)
+{
+count++;
+end=time+1;
+avg=avg+end-a[smallest]-x[smallest];
+tt=tt+end-a[smallest];
+}
+}
+// end of outer for loop
+System.out.println("\n average waiting time = "+avg/n);
+System.out.format("average turn around time= %.2f",tt/n);
+}
+}
